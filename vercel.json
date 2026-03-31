@@ -2,13 +2,13 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/app.py",
+      "src": "API_CHARADA_BACKEND/app.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "API_CHARADA_BACKEND/(.*)",
       "dest": "api/app.py"
     }
   ]
