@@ -14,22 +14,21 @@ load_dotenv()
 db = firestore.client()
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] =  os.getenv("SECRET_KEY")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
-CORS(app, origins="*") 
+CORS(app, origins="*")
 
 ADM_USUARIO = os.getenv("ADM_USUARIO")
 ADM_SENHA = os.getenv("ADM_SENHA")
 
 if os.getenv("VERCEL"):
-    # Online na Vercel
     cred = credentials.Certificate(json.loads(os.getenv("FIREBASE_CREDENTIALS")))
 else:
-    # Local
     cred = credentials.Certificate("firebase.json")
 
-# Carregar as credenciais do Firebase
 firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 # Rota principal
 @app.route('/', methods=['GET'])
