@@ -7,10 +7,19 @@ from auth import token_obrigatorio, gerar_token
 from dotenv import load_dotenv
 import os
 import json
+from flasgger import Swagger
 
 load_dotenv()
 
 app = Flask(__name__)
+
+app.config['SWAGGER'] = {
+    'openapi':'3.0.0'
+}
+
+# CHAMAR O OPENAPI PARA O CÓDIGO
+swagger =  Swagger(app, template_file='openapi.yaml')
+
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 CORS(app, origins="*")
@@ -35,6 +44,8 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
+
+
 
 # =========================================
 #              ROTA PRINCIPAL
