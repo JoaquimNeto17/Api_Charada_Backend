@@ -36,7 +36,7 @@ def gerar_token(usuario):
 
 
 # ==========================
-# DECORATOR PARA PROTEGER ROTAS
+#  PROTEGER ROTAS
 # ==========================
 def token_obrigatorio(func):
     """
@@ -52,27 +52,23 @@ def token_obrigatorio(func):
     def verificar_token(*args, **kwargs):
         auth_header = request.headers.get("Authorization")
 
-        # Verifica se o cabeçalho foi enviado
         if not auth_header:
             return jsonify({"erro": "Token ausente. Faça login."}), 401
 
         partes = auth_header.split()
 
-        # Verifica se o formato está correto: Bearer SEU_TOKEN
         if len(partes) != 2 or partes[0] != "Bearer":
             return jsonify({"erro": "Cabeçalho Authorization inválido."}), 401
 
         token = partes[1]
 
         try:
-            # Tenta decodificar o token usando a chave secreta
             dados_token = jwt.decode(
                 token,
                 current_app.config["SECRET_KEY"],
                 algorithms=["HS256"]
             )
 
-            # Se quiser, depois você pode usar esses dados dentro da rota
             request.usuario_logado = dados_token
 
         except jwt.ExpiredSignatureError:
